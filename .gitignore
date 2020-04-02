@@ -66,3 +66,6 @@ nli-data/*
 nlidata/*
 rel_ext_data*
 *_solved.ipynb
+.idea/*
+data.tgz
+
