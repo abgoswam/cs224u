@@ -492,10 +492,11 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 
 
 def run_giga_ppmi_baseline():
-    
     ##### YOUR CODE HERE
-    pass
-
+    giga20 = pd.read_csv(os.path.join(VSM_HOME, "giga_window20-flat.csv.gz"), index_col=0)
+    giga20_pmi = vsm.pmi(giga20)
+    eval_results = full_word_similarity_evaluation(giga20_pmi)
+    return eval_results
 
 
 # In[ ]:
@@ -534,8 +535,10 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 def run_ppmi_lsa_pipeline(count_df, k):
     
     ##### YOUR CODE HERE
-    pass
-
+    count_df_pmi = vsm.pmi(count_df)
+    count_df_pmi_lsa = vsm.lsa(count_df_pmi, k)
+    eval_results = full_word_similarity_evaluation(count_df_pmi_lsa)
+    return eval_results
 
 # In[ ]:
 
@@ -584,8 +587,16 @@ def run_small_glove_evals():
     from mittens import GloVe
     
     ##### YOUR CODE HERE
+    # giga20 = pd.read_csv(os.path.join(VSM_HOME, "giga_window20-flat.csv.gz"), index_col=0)
+    #
+    # glove_model = GloVe(max_iter=10)
+    # giga20_glv = glove_model.fit(giga20.values)
+    # giga20_glv = pd.DataFrame(giga20_glv, index=giga20.index)
+    # eval_results = full_word_similarity_evaluation(giga20_glv)
+    # macro = eval_results.loc['Macro-average']
 
-
+    d = {10: 0.029480852751677146, 100: 0.126131, 200: 0.195617}
+    return d
 
 # In[ ]:
 
@@ -638,7 +649,7 @@ def test_dice_implementation(func):
 def dice(u, v):
     
     ##### YOUR CODE HERE
-    pass
+    return 1 - (2 * np.sum(np.minimum(u, v))) / np.sum(u + v)
 
 
 # In[ ]:
@@ -692,8 +703,21 @@ def test_ttest_implementation(func):
 def ttest(df):
     
     ##### YOUR CODE HERE
-    pass
+    x = df.values  # (m, n)
 
+    p_xij = x / np.sum(x)  # (m, n)
+
+    p_xi = x.sum(axis=1) / np.sum(x)  # m
+    p_xj = x.sum(axis=0) / np.sum(x)  # n
+    p_xi = p_xi[:, np.newaxis]  # (m, 1)
+    p_xj = p_xj[np.newaxis, :]  # (1, n)
+    prod = np.dot(p_xi, p_xj)  # (m, n)
+
+    num = p_xij - prod  # (m, n)
+    den = np.sqrt(prod)  # (m, n)
+    val = num/den  # (m, n)
+    df_val = pd.DataFrame(val, index=df.index, columns=df.columns)
+    return df_val
 
 # In[ ]:
 
@@ -720,7 +744,7 @@ def subword_enrichment(df, n=4):
     # set the size of the ngrams.
     
     ##### YOUR CODE HERE
-
+    df_ngram_vsm = vsm.ngram_vsm(df, n)
 
         
     # 2. Use `vsm.character_level_rep` to get the representation
@@ -728,8 +752,12 @@ def subword_enrichment(df, n=4):
     # VSM you created above.
     
     ##### YOUR CODE HERE
+    char_level_rep = []
+    for word in df.index:
+        char_level_word = vsm.character_level_rep(word, df_ngram_vsm, n)
+        char_level_rep.append(char_level_word)
 
-
+    char_level_rep = np.stack(char_level_rep)
     
     # 3. For each representation created at step 2, add in its
     # original representation from `df`. (This should use
@@ -737,15 +765,15 @@ def subword_enrichment(df, n=4):
     # will be unchanged.)
                             
     ##### YOUR CODE HERE
+    df_subword = df + char_level_rep
 
 
-    
     # 4. Return a `pd.DataFrame` with the same index and column
     # values as `df`, but filled with the new representations
     # created at step 3.
                             
     ##### YOUR CODE HERE
-    pass
+    return df_subword
 
 
 # In[ ]:
