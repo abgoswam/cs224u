@@ -497,6 +497,7 @@ def run_giga_ppmi_baseline():
     giga20 = pd.read_csv(os.path.join(VSM_HOME, "giga_window20-flat.csv.gz"), index_col=0)
     giga20_pmi = vsm.pmi(giga20)
     eval_results = full_word_similarity_evaluation(giga20_pmi)
+    print(eval_results)
     return eval_results
 
 
@@ -540,6 +541,7 @@ def run_ppmi_lsa_pipeline(count_df, k):
     count_df_pmi = vsm.pmi(count_df)
     count_df_pmi_lsa = vsm.lsa(count_df_pmi, k)
     eval_results = full_word_similarity_evaluation(count_df_pmi_lsa)
+    print(eval_results)
     return eval_results
 
 
@@ -556,7 +558,7 @@ def test_run_ppmi_lsa_pipeline(run_ppmi_lsa_pipeline):
     assert men_result == men_expected,        "Expected men value of {}; got {}".format(men_expected, men_result)
 
 
-# In[31]:
+# In[30]:
 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
@@ -583,7 +585,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # Performance will vary a lot for this function, so there is some uncertainty in the testing, but `test_run_small_glove_evals` will at least check that you wrote a function with the right general logic.
 
-# In[32]:
+# In[31]:
 
 
 def run_small_glove_evals():
@@ -602,7 +604,7 @@ def run_small_glove_evals():
     return d
 
 
-# In[33]:
+# In[32]:
 
 
 def test_run_small_glove_evals(run_small_glove_evals):
@@ -612,7 +614,7 @@ def test_run_small_glove_evals(run_small_glove_evals):
         assert isinstance(data[max_iter], float)
 
 
-# In[34]:
+# In[33]:
 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
@@ -633,7 +635,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 #  
 # You can use `test_dice_implementation` below to check that your implementation is correct.
 
-# In[38]:
+# In[34]:
 
 
 def test_dice_implementation(func):
@@ -647,7 +649,7 @@ def test_dice_implementation(func):
     assert func(X[1], X[2]).round(5) == 0.67568
 
 
-# In[39]:
+# In[35]:
 
 
 def dice(u, v):
@@ -657,7 +659,7 @@ def dice(u, v):
 
 
 
-# In[40]:
+# In[36]:
 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
@@ -681,7 +683,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # For this problem, implement this reweighting scheme. You can use `test_ttest_implementation` below to check that your implementation is correct. You do not need to use this for any evaluations, though we hope you will be curious enough to do so!
 
-# In[41]:
+# In[37]:
 
 
 def test_ttest_implementation(func):
@@ -702,7 +704,7 @@ def test_ttest_implementation(func):
     assert np.array_equal(predicted.round(5), actual)
 
 
-# In[42]:
+# In[38]:
 
 
 def ttest(df):
@@ -725,7 +727,7 @@ def ttest(df):
 
 
 
-# In[43]:
+# In[39]:
 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
@@ -740,7 +742,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # You don't need to write a lot of code; the motivation for this question is that the function you write could have practical value.
 
-# In[44]:
+# In[40]:
 
 
 def subword_enrichment(df, n=4):
@@ -783,7 +785,7 @@ def subword_enrichment(df, n=4):
     return df_subword
 
 
-# In[45]:
+# In[41]:
 
 
 def test_subword_enrichment(func):
@@ -807,7 +809,7 @@ def test_subword_enrichment(func):
     assert np.array_equal(expected.values, new_df.values),         "Co-occurrence values aren't the same"    
 
 
-# In[46]:
+# In[42]:
 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
@@ -826,13 +828,70 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # In the cell below, please provide a brief technical description of your original system, so that the teaching team can gain an understanding of what it does. This will help us to understand your code and analyze all the submissions to identify patterns and strategies.
 
-# In[ ]:
+# In[46]:
 
 
 # Enter your system description in this cell.
+# The main components of this original system are as follows:
+# (a) use scaled counts, instead of flat counts. We observed scaled counts performed better
+# (b) use of PMI helps
+# (c) we train a function for distfunc. 
+#     For this we use all 4 of the similarity/relatednedd data sets
+#     We use lightgbm.LGBMRegressor to learn this function. 
+
 # Please do not remove this comment.
 if 'IS_GRADESCOPE_ENV' not in os.environ:
-    pass
+    # pass
+    ##### YOUR CODE HERE
+    #imdb5 = pd.read_csv(os.path.join(VSM_HOME, "imdb_window5-scaled.csv.gz"), index_col=0)
+    #imdb5_pmi = vsm.pmi(imdb5)
+    #eval_results = full_word_similarity_evaluation(imdb5_pmi)
+    #print(eval_results)
+    
+    from sklearn import linear_model
+    import lightgbm
+    
+    class DistFuncRegressor:
+        def __init__(self):
+            #self.model = linear_model.LinearRegression()
+            self.model = lightgbm.LGBMRegressor()
+
+        def train(self, X, y):
+            self.model.fit(X, y)
+
+        def distfunc(self, a, b):
+            X_test = a - b
+            return self.model.predict([X_test])
+        
+    giga5 = pd.read_csv(os.path.join(VSM_HOME, "giga_window5-scaled.csv.gz"), index_col=0)
+    giga5_pmi = vsm.pmi(giga5)
+    
+    #lets try to train a model
+    X = []
+    y = []
+    for reader in READERS:
+        y_temp = []
+        for w1, w2, score in reader():
+            w1_values = giga5_pmi.loc[w1].values
+            w2_values = giga5_pmi.loc[w2].values
+
+            item = w1_values - w2_values
+            X.append(item)
+            y_temp.append(score)
+
+        # normalize y
+        y_temp = np.array(y_temp)
+        y_temp = (y_temp - np.min(y_temp)) / np.ptp(y_temp)  # normalize in range [0, 1]
+        y.append(y_temp)
+
+    # stack X's vertically, and y horizontally.
+    X = np.vstack(X)
+    y = np.hstack(y)
+    regressor = DistFuncRegressor()
+    regressor.train(X, y)
+    
+    eval_results = full_word_similarity_evaluation(giga5_pmi, distfunc=regressor.distfunc)
+    print(eval_results)
 
 
 # ## Bake-off [1 point]
@@ -850,7 +909,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # The announcement will include the details on where to submit your entry.
 
-# In[ ]:
+# In[44]:
 
 
 # Enter your bake-off assessment code into this cell. 
@@ -863,7 +922,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 
 
 
-# In[ ]:
+# In[45]:
 
 
 # On an otherwise blank line in this cell, please enter
