@@ -832,6 +832,8 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 
 
 # Enter your system description in this cell.
+
+# This is my code description attached here as requested
 # The main components of this original system are as follows:
 # (a) use scaled counts, instead of flat counts. We observed scaled counts performed better
 # (b) use of PMI helps
@@ -839,7 +841,10 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 #     For this we use all 4 of the similarity/relatednedd data sets
 #     We use lightgbm.LGBMRegressor to learn this function. 
 
-# Please do not remove this comment.
+# My peak score was: 0.905132
+# This is my code
+# You can see that my system is based on the description above.
+
 if 'IS_GRADESCOPE_ENV' not in os.environ:
     # pass
     ##### YOUR CODE HERE
@@ -892,6 +897,8 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
     
     eval_results = full_word_similarity_evaluation(giga5_pmi, distfunc=regressor.distfunc)
     print(eval_results)
+    
+# Please do not remove this comment.
 
 
 # ## Bake-off [1 point]
