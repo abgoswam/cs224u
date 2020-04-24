@@ -3,7 +3,7 @@
 
 # # Homework and bake-off: Relation extraction using distant supervision
 
-# In[ ]:
+# In[1]:
 
 
 __author__ = "Bill MacCartney and Christopher Potts"
@@ -35,7 +35,7 @@ __version__ = "CS224u, Stanford, Spring 2020"
 # 
 # See [the first notebook in this unit](rel_ext_01_task.ipynb#Set-up) for set-up instructions.
 
-# In[ ]:
+# In[2]:
 
 
 import numpy as np
@@ -47,25 +47,25 @@ import utils
 
 # As usual, we unite our corpus and KB into a dataset, and create some splits for experimentation:
 
-# In[ ]:
+# In[3]:
 
 
 rel_ext_data_home = os.path.join('data', 'rel_ext_data')
 
 
-# In[ ]:
+# In[4]:
 
 
 corpus = rel_ext.Corpus(os.path.join(rel_ext_data_home, 'corpus.tsv.gz'))
 
 
-# In[ ]:
+# In[5]:
 
 
 kb = rel_ext.KB(os.path.join(rel_ext_data_home, 'kb.tsv.gz'))
 
 
-# In[ ]:
+# In[6]:
 
 
 dataset = rel_ext.Dataset(corpus, kb)
@@ -73,7 +73,7 @@ dataset = rel_ext.Dataset(corpus, kb)
 
 # You are not wedded to this set-up for splits. The bake-off will be conducted on a previously unseen test-set, so all of the data in `dataset` is fair game:
 
-# In[ ]:
+# In[7]:
 
 
 splits = dataset.build_splits(
@@ -82,7 +82,7 @@ splits = dataset.build_splits(
     seed=1)
 
 
-# In[ ]:
+# In[8]:
 
 
 splits
@@ -92,7 +92,7 @@ splits
 
 # ### Hand-build feature functions
 
-# In[ ]:
+# In[9]:
 
 
 def simple_bag_of_words_featurizer(kbt, corpus, feature_counter):
@@ -105,25 +105,25 @@ def simple_bag_of_words_featurizer(kbt, corpus, feature_counter):
     return feature_counter
 
 
-# In[ ]:
+# In[10]:
 
 
 featurizers = [simple_bag_of_words_featurizer]
 
 
-# In[ ]:
+# In[11]:
 
 
 model_factory = lambda: LogisticRegression(fit_intercept=True, solver='liblinear')
 
 
-# In[ ]:
+# In[12]:
 
 
 baseline_results = rel_ext.experiment(
     splits,
-    train_split='tiny',
-    test_split='tiny',
+    train_split='train',
+    test_split='dev',
     featurizers=featurizers,
     model_factory=model_factory,
     verbose=True)
@@ -131,7 +131,7 @@ baseline_results = rel_ext.experiment(
 
 # Studying model weights might yield insights:
 
-# In[ ]:
+# In[13]:
 
 
 rel_ext.examine_model_weights(baseline_results)
@@ -141,20 +141,20 @@ rel_ext.examine_model_weights(baseline_results)
 # 
 # This simple baseline sums the GloVe vector representations for all of the words in the "middle" span and feeds those representations into the standard `LogisticRegression`-based `model_factory`. The crucial parameter that enables this is `vectorize=False`. This essentially says to `rel_ext.experiment` that your featurizer or your model will do the work of turning examples into vectors; in that case, `rel_ext.experiment` just organizes these representations by relation type.
 
-# In[ ]:
+# In[14]:
 
 
 GLOVE_HOME = os.path.join('data', 'glove.6B')
 
 
-# In[ ]:
+# In[15]:
 
 
 glove_lookup = utils.glove2dict(
     os.path.join(GLOVE_HOME, 'glove.6B.300d.txt'))
 
 
-# In[ ]:
+# In[16]:
 
 
 def glove_middle_featurizer(kbt, corpus, np_func=np.sum):
@@ -173,14 +173,13 @@ def glove_middle_featurizer(kbt, corpus, np_func=np.sum):
         return np_func(reps, axis=0)
 
 
-# In[ ]:
-glove_middle_featurizer(kb.kb_triples[0], corpus)
+# In[17]:
 
 
 glove_results = rel_ext.experiment(
     splits,
-    train_split='tiny',
-    test_split='tiny',
+    train_split='train',
+    test_split='dev',
     featurizers=[glove_middle_featurizer],    
     vectorize=False, # Crucial for this featurizer!
     verbose=True)
@@ -206,7 +205,7 @@ glove_results = rel_ext.experiment(
 # 
 # The function `test_run_svm_model_factory` will check that your function conforms to these general specifications.
 
-# In[ ]:
+# In[18]:
 
 
 def run_svm_model_factory():
@@ -215,9 +214,9 @@ def run_svm_model_factory():
     from sklearn.svm import SVC
     glove_results = rel_ext.experiment(
         splits,
-        train_split='tiny',
-        test_split='tiny',
-        model_factory=(lambda: SVC(kernel='linear')),
+        train_split='train',
+        test_split='dev',
+        model_factory=(lambda: SVC(kernel='linear', max_iter=2)),
         featurizers=[glove_middle_featurizer],
         vectorize=False,  # Crucial for this featurizer!
         verbose=True)
@@ -225,7 +224,7 @@ def run_svm_model_factory():
     return glove_results
 
 
-# In[ ]:
+# In[19]:
 
 
 def test_run_svm_model_factory(run_svm_model_factory):
@@ -235,7 +234,7 @@ def test_run_svm_model_factory(run_svm_model_factory):
     assert 'SVC' in results['models']['adjoins'].__class__.__name__,         "It looks like the model factor wasn't set to use an SVC."    
 
 
-# In[ ]:
+# In[20]:
 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
@@ -254,7 +253,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # 3. `rel_ext.experiment` returns some of the core objects used in the experiment. How many feature names does the `vectorizer` have for the experiment run in the previous step? Include the code needed for getting this value. (Note: we're partly asking you to figure out how to get this value by using the sklearn documentation, so please don't ask how to do it!)
 
-# In[ ]:
+# In[21]:
 
 
 def directional_bag_of_words_featurizer(kbt, corpus, feature_counter): 
@@ -279,18 +278,19 @@ def directional_bag_of_words_featurizer(kbt, corpus, feature_counter):
 # Call to `rel_ext.experiment`:
 ##### YOUR CODE HERE    
 featurizers = [directional_bag_of_words_featurizer]
+model_factory = lambda: LogisticRegression(fit_intercept=True, solver='liblinear')
 directional_results = rel_ext.experiment(
     splits,
-    train_split='tiny',
-    test_split='tiny',
+    train_split='train',
+    test_split='dev',
     featurizers=featurizers,
     model_factory=model_factory,
     verbose=True)
 
-v = directional_results['vectorizer']
-len(v.get_feature_names())  # 1565
+len(directional_results['vectorizer'].get_feature_names())
 
-# In[ ]:
+
+# In[22]:
 
 
 def test_directional_bag_of_words_featurizer(corpus):
@@ -305,7 +305,7 @@ def test_directional_bag_of_words_featurizer(corpus):
     assert feature_counter == expected,         "Expected:\n{}\nGot:\n{}".format(expected, feature_counter)
 
 
-# In[ ]:
+# In[23]:
 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
@@ -330,7 +330,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # 2. A call to `rel_ext.experiment` with `middle_bigram_pos_tag_featurizer` as the only featurizer. (Aside from this, use all the default values for `rel_ext.experiment` as exemplified above in this notebook.)
 
-# In[ ]:
+# In[27]:
 
 
 def middle_bigram_pos_tag_featurizer(kbt, corpus, feature_counter):
@@ -358,12 +358,12 @@ def get_tag_bigrams(s):
     
     ##### YOUR CODE HERE
     tags = [start_symbol] + get_tags(s) + [end_symbol]
-
     tag_bigrams = []
     for i in range(len(tags) - 1):
         tag_bigrams.append(tags[i] + " " + tags[i + 1])
-
     return tag_bigrams
+
+
     
 def get_tags(s): 
     """Given a sequence of word/POS elements (lemmas), this function
@@ -382,14 +382,14 @@ def parse_lem(lem):
 featurizers = [middle_bigram_pos_tag_featurizer]
 middle_bigram_pos_results = rel_ext.experiment(
     splits,
-    train_split='tiny',
-    test_split='tiny',
+    train_split='train',
+    test_split='dev',
     featurizers=featurizers,
     model_factory=model_factory,
     verbose=True)
 
 
-# In[ ]:
+# In[28]:
 
 
 def test_middle_bigram_pos_tag_featurizer(corpus):
@@ -404,7 +404,7 @@ def test_middle_bigram_pos_tag_featurizer(corpus):
     assert feature_counter == expected,         "Expected:\n{}\nGot:\n{}".format(expected, feature_counter)
 
 
-# In[ ]:
+# In[29]:
 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
@@ -436,7 +436,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # 2. A call to `rel_ext.experiment` with `synset_featurizer` as the only featurizer. (Aside from this, use all the default values for `rel_ext.experiment`.)
 
-# In[ ]:
+# In[30]:
 
 
 from nltk.corpus import wordnet as wn
@@ -471,6 +471,8 @@ def get_synsets(s):
 
     return synsets
 
+    
+    
 def convert_tag(t):
     """Converts tags so that they can be used by WordNet:
     
@@ -495,14 +497,14 @@ def convert_tag(t):
 featurizers = [synset_featurizer]
 synset_results = rel_ext.experiment(
     splits,
-    train_split='tiny',
-    test_split='tiny',
+    train_split='train',
+    test_split='dev',
     featurizers=featurizers,
     model_factory=model_factory,
     verbose=True)
 
 
-# In[ ]:
+# In[31]:
 
 
 def test_synset_featurizer(corpus):
@@ -523,7 +525,7 @@ def test_synset_featurizer(corpus):
         assert result == expected,             "Incorrect count for {}: Expected {}; Got {}".format(ss, expected, result)
 
 
-# In[ ]:
+# In[32]:
 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
@@ -548,6 +550,14 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 
 
 # Enter your system description in this cell.
+
+# blah blah
+
+# My peak score was: 0.1
+
+if 'IS_GRADESCOPE_ENV' not in os.environ:
+    pass
+
 # Please do not remove this comment.
 
 
