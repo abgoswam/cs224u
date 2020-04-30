@@ -68,5 +68,4 @@ rel_ext_data*
 *_solved.ipynb
 .idea/*
 data.tgz
-bakeoff-wordsim-test-data.zip
-bakeoff-wordsim-test-data/
+bakeoff-*

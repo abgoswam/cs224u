@@ -330,7 +330,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # 2. A call to `rel_ext.experiment` with `middle_bigram_pos_tag_featurizer` as the only featurizer. (Aside from this, use all the default values for `rel_ext.experiment` as exemplified above in this notebook.)
 
-# In[27]:
+# In[24]:
 
 
 def middle_bigram_pos_tag_featurizer(kbt, corpus, feature_counter):
@@ -389,7 +389,7 @@ middle_bigram_pos_results = rel_ext.experiment(
     verbose=True)
 
 
-# In[28]:
+# In[25]:
 
 
 def test_middle_bigram_pos_tag_featurizer(corpus):
@@ -404,7 +404,7 @@ def test_middle_bigram_pos_tag_featurizer(corpus):
     assert feature_counter == expected,         "Expected:\n{}\nGot:\n{}".format(expected, feature_counter)
 
 
-# In[29]:
+# In[26]:
 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
@@ -436,7 +436,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # 2. A call to `rel_ext.experiment` with `synset_featurizer` as the only featurizer. (Aside from this, use all the default values for `rel_ext.experiment`.)
 
-# In[30]:
+# In[27]:
 
 
 from nltk.corpus import wordnet as wn
@@ -504,7 +504,7 @@ synset_results = rel_ext.experiment(
     verbose=True)
 
 
-# In[31]:
+# In[28]:
 
 
 def test_synset_featurizer(corpus):
@@ -525,7 +525,7 @@ def test_synset_featurizer(corpus):
         assert result == expected,             "Incorrect count for {}: Expected {}; Got {}".format(ss, expected, result)
 
 
-# In[32]:
+# In[29]:
 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
@@ -546,17 +546,123 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # In the cell below, please provide a brief technical description of your original system, so that the teaching team can gain an understanding of what it does. This will help us to understand your code and analyze all the submissions to identify patterns and strategies.
 
-# In[ ]:
+# In[48]:
 
 
 # Enter your system description in this cell.
 
-# blah blah
+# Final system uses the following:
+# a. chaining featurizers -- helps
+# b. lightgbm classifier -- helps
 
-# My peak score was: 0.1
+# Other things tried out:
+# 1. context words as features with flexible window size -- did not help
+# 2. direction-based length features -- helps sometimes. keeping it out of final system.
+# 3. different values for `train_sampling_rate` -- interestingly found the default (0.1) gives best results 
+# 4. chaining featurizers -- helps
+# 5. lightgbm classifier -- helps
+
+# My peak score was: 0.674
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
-    pass
+    
+    import lightgbm
+    
+    # ex : example
+    # suffix: suffix we want to prepend to word
+    # feature_counter : dict we are working with
+    # window_size : number of context words.
+    def add_context(ex, suffix, feature_counter, window_size):
+        
+        # get preceeding words in left context  
+        left_context = ex.left.split(' ')
+        left_context_window = left_context[len(left_context)-window_size:]
+        for word in left_context_window:
+            feature_counter[word + suffix] += 1
+
+        # get succeeding words in right context  
+        right_context = ex.right.split(' ')
+        right_context_window = right_context[:window_size]
+        for word in right_context_window:
+            feature_counter[word + suffix] += 1
+    
+    # ex : example
+    # suffix: suffix we want to prepend to length
+    # feature_counter : dict we are working with
+    def add_feature_counts(ex, suffix, feature_counter):
+        # get feature counts 
+        feature_counter['###left_chars_count' + suffix] += len(ex.left)
+        feature_counter['###middle_chars_count' + suffix] += len(ex.middle)
+        feature_counter['###right_chars_count' + suffix] += len(ex.right)
+        
+        feature_counter['###left_words_count' + suffix] += len(ex.left.split(' '))
+        feature_counter['###middle_words_count' + suffix] += len(ex.middle.split(' '))
+        feature_counter['###right_words_count' + suffix] += len(ex.right.split(' '))        
+
+    
+    def directional_bag_of_words_featurizer_extended(kbt, corpus, feature_counter): 
+        # Append these to the end of the keys you add/access in 
+        # `feature_counter` to distinguish the two orders. You'll
+        # need to use exactly these strings in order to pass 
+        # `test_directional_bag_of_words_featurizer`.
+        subject_object_suffix = "_SO"
+        object_subject_suffix = "_OS"
+    
+        # specify window size         
+        window_size = 10
+        
+        ##### YOUR CODE HERE
+        for ex in corpus.get_examples_for_entities(kbt.sbj, kbt.obj):
+            for word in ex.middle.split(' '):
+                feature_counter[word + subject_object_suffix] += 1            
+            
+            # add context words
+            # add_context(ex, subject_object_suffix, feature_counter, window_size)
+            
+            # add count features
+            # add_feature_counts(ex, subject_object_suffix, feature_counter)
+                
+        for ex in corpus.get_examples_for_entities(kbt.obj, kbt.sbj):
+            for word in ex.middle.split(' '):
+                feature_counter[word + object_subject_suffix] += 1
+            
+            # add context words
+            # add_context(ex, object_subject_suffix, feature_counter, window_size)
+            
+            # add count features
+            # add_feature_counts(ex, object_subject_suffix, feature_counter)
+            
+        return feature_counter
+
+    model_factory = lambda: lightgbm.LGBMClassifier()
+    
+    featurizers_list = [
+        #[simple_bag_of_words_featurizer],
+        #[directional_bag_of_words_featurizer_extended],
+        #[simple_bag_of_words_featurizer, directional_bag_of_words_featurizer_extended],
+        #[simple_bag_of_words_featurizer, directional_bag_of_words_featurizer_extended, middle_bigram_pos_tag_featurizer],
+        #[simple_bag_of_words_featurizer, directional_bag_of_words_featurizer_extended, synset_featurizer],
+        [simple_bag_of_words_featurizer, directional_bag_of_words_featurizer_extended, middle_bigram_pos_tag_featurizer, synset_featurizer]
+    ]
+       
+    train_sampling_rates = [
+        # 0.05,
+        0.1,
+        # 0.2
+    ]
+    
+    for featurizers in featurizers_list:
+        for train_sampling_rate in train_sampling_rates:
+            print("{0}:{1}".format(train_sampling_rate, featurizers))
+        
+            train_results = rel_ext.experiment(
+                splits,
+                train_split='train',
+                train_sampling_rate=train_sampling_rate,
+                test_split='dev',
+                featurizers=featurizers,
+                model_factory=model_factory,
+                verbose=True)
 
 # Please do not remove this comment.
 
@@ -576,7 +682,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 # 
 # The announcement will include the details on where to submit your entry.
 
-# In[ ]:
+# In[31]:
 
 
 # Enter your bake-off assessment code in this cell. 
@@ -588,7 +694,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 
 
 
-# In[ ]:
+# In[32]:
 
 
 # On an otherwise blank line in this cell, please enter
