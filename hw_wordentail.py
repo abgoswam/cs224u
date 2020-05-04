@@ -3,7 +3,7 @@
 
 # # Homework and bake-off: word-level entailment with neural networks
 
-# In[ ]:
+# In[1]:
 
 
 __author__ = "Christopher Potts"
@@ -43,7 +43,7 @@ __version__ = "CS224u, Stanford, Spring 2020"
 
 # See [the first notebook in this unit](nli_01_task_and_data.ipynb) for set-up instructions.
 
-# In[ ]:
+# In[2]:
 
 
 from collections import defaultdict
@@ -56,7 +56,7 @@ import nli
 import utils
 
 
-# In[ ]:
+# In[3]:
 
 
 DATA_HOME = 'data'
@@ -78,7 +78,7 @@ GLOVE_HOME = os.path.join(DATA_HOME, 'glove.6B')
 # 
 # These are very different problems. For `word_disjoint`, there is real pressure on the model to learn abstract relationships, as opposed to memorizing properties of individual words.
 
-# In[ ]:
+# In[4]:
 
 
 with open(wordentail_filename) as f:
@@ -87,7 +87,7 @@ with open(wordentail_filename) as f:
 
 # The outer keys are the  splits plus a list giving the vocabulary for the entire dataset:
 
-# In[ ]:
+# In[5]:
 
 
 wordentail_data.keys()
@@ -95,7 +95,7 @@ wordentail_data.keys()
 
 # ### Edge disjoint
 
-# In[ ]:
+# In[6]:
 
 
 wordentail_data['edge_disjoint'].keys()
@@ -103,7 +103,7 @@ wordentail_data['edge_disjoint'].keys()
 
 # This is what the split looks like; all three have this same format:
 
-# In[ ]:
+# In[7]:
 
 
 wordentail_data['edge_disjoint']['dev'][: 5]
@@ -111,7 +111,7 @@ wordentail_data['edge_disjoint']['dev'][: 5]
 
 # Let's test to make sure no edges are shared between `train` and `dev`:
 
-# In[ ]:
+# In[8]:
 
 
 nli.get_edge_overlap_size(wordentail_data, 'edge_disjoint')
@@ -119,7 +119,7 @@ nli.get_edge_overlap_size(wordentail_data, 'edge_disjoint')
 
 # As we expect, a *lot* of vocabulary items are shared between `train` and `dev`:
 
-# In[ ]:
+# In[9]:
 
 
 nli.get_vocab_overlap_size(wordentail_data, 'edge_disjoint')
@@ -127,7 +127,7 @@ nli.get_vocab_overlap_size(wordentail_data, 'edge_disjoint')
 
 # This is a large percentage of the entire vocab:
 
-# In[ ]:
+# In[10]:
 
 
 len(wordentail_data['vocab'])
@@ -135,14 +135,14 @@ len(wordentail_data['vocab'])
 
 # Here's the distribution of labels in the `train` set. It's highly imbalanced, which will pose a challenge for learning. (I'll go ahead and reveal that the `dev` set is similarly distributed.)
 
-# In[ ]:
+# In[11]:
 
 
 def label_distribution(split):
     return pd.DataFrame(wordentail_data[split]['train'])[1].value_counts()
 
 
-# In[ ]:
+# In[12]:
 
 
 label_distribution('edge_disjoint')
@@ -150,7 +150,7 @@ label_distribution('edge_disjoint')
 
 # ### Word disjoint
 
-# In[ ]:
+# In[13]:
 
 
 wordentail_data['word_disjoint'].keys()
@@ -158,7 +158,7 @@ wordentail_data['word_disjoint'].keys()
 
 # In the `word_disjoint` split, no __words__ are shared between `train` and `dev`:
 
-# In[ ]:
+# In[14]:
 
 
 nli.get_vocab_overlap_size(wordentail_data, 'word_disjoint')
@@ -166,7 +166,7 @@ nli.get_vocab_overlap_size(wordentail_data, 'word_disjoint')
 
 # Because no words are shared between `train` and `dev`, no edges are either:
 
-# In[ ]:
+# In[15]:
 
 
 nli.get_edge_overlap_size(wordentail_data, 'word_disjoint')
@@ -174,7 +174,7 @@ nli.get_edge_overlap_size(wordentail_data, 'word_disjoint')
 
 # The label distribution is similar to that of `edge_disjoint`, though the overall number of examples is a bit smaller:
 
-# In[ ]:
+# In[16]:
 
 
 label_distribution('word_disjoint')
@@ -191,7 +191,7 @@ label_distribution('word_disjoint')
 # 1. Random vectors (as returned by `utils.randvec`).
 # 1. 50-dimensional GloVe representations.
 
-# In[ ]:
+# In[17]:
 
 
 def randvec(w, n=50, lower=-1.0, upper=1.0):
@@ -199,7 +199,7 @@ def randvec(w, n=50, lower=-1.0, upper=1.0):
     return utils.randvec(n=n, lower=lower, upper=upper)
 
 
-# In[ ]:
+# In[18]:
 
 
 # Any of the files in glove.6B will work here:
@@ -221,7 +221,7 @@ def glove_vec(w):
 
 # Here we decide how to combine the two word vectors into a single representation. In more detail, where `u` is a vector representation of the left word and `v` is a vector representation of the right word, we need a function `vector_combo_func` such that `vector_combo_func(u, v)` returns a new input vector `z` of dimension `m`. A simple example is concatenation:
 
-# In[ ]:
+# In[19]:
 
 
 def vec_concatenate(u, v):
@@ -235,7 +235,7 @@ def vec_concatenate(u, v):
 # 
 # For a baseline model, I chose `TorchShallowNeuralClassifier`:
 
-# In[ ]:
+# In[20]:
 
 
 net = TorchShallowNeuralClassifier(hidden_dim=50, max_iter=100)
@@ -245,7 +245,7 @@ net = TorchShallowNeuralClassifier(hidden_dim=50, max_iter=100)
 # 
 # The following puts the above pieces together, using `vector_func=glove_vec`, since `vector_func=randvec` seems so hopelessly misguided for `word_disjoint`!
 
-# In[ ]:
+# In[21]:
 
 
 word_disjoint_experiment = nli.wordentail_experiment(
@@ -254,6 +254,8 @@ word_disjoint_experiment = nli.wordentail_experiment(
     model=net, 
     vector_func=glove_vec,
     vector_combo_func=vec_concatenate)
+
+print("macro-f1: {0}".format(word_disjoint_experiment['macro-F1']))
 
 
 # ## Homework questions
@@ -274,23 +276,18 @@ word_disjoint_experiment = nli.wordentail_experiment(
 #     
 # The test functions `test_hypothesis_only` and `test_run_hypothesis_only_evaluation` will help ensure that your functions have the desired logic.
 
-# In[ ]:
+# In[22]:
 
 
 ##### YOUR CODE HERE
-
-
-    ##### YOUR CODE HERE
-
 def hypothesis_only(u, v):
     """Just return the hypothesis part"""
     return v
 
 
-
 def run_hypothesis_only_evaluation():
     ##### YOUR CODE HERE
-    # pass
+    
     from sklearn.linear_model import LogisticRegression
 
     eval_results = {}
@@ -304,12 +301,13 @@ def run_hypothesis_only_evaluation():
                 vector_func=glove_vec,
                 vector_combo_func=vec_combo_func)
 
+            print("macro-f1: {0}".format(result['macro-F1']))
             eval_results[(condition_name, vec_combo_func.__name__)] = result['macro-F1']
 
     return eval_results
 
 
-# In[ ]:
+# In[23]:
 
 
 def test_hypothesis_only(hypothesis_only):
@@ -317,13 +315,13 @@ def test_hypothesis_only(hypothesis_only):
     assert v == 2   
 
 
-# In[ ]:
+# In[24]:
 
 
 test_hypothesis_only(hypothesis_only)
 
 
-# In[ ]:
+# In[25]:
 
 
 def test_run_hypothesis_only_evaluation(run_hypothesis_only_evaluation):
@@ -332,7 +330,7 @@ def test_run_hypothesis_only_evaluation(run_hypothesis_only_evaluation):
     assert isinstance(results[('word_disjoint', 'vec_concatenate')], float),         "The values of the `run_hypothesis_only_evaluation` result should be floats"
 
 
-# In[ ]:
+# In[26]:
 
 
 test_run_hypothesis_only_evaluation(run_hypothesis_only_evaluation)
@@ -348,12 +346,11 @@ test_run_hypothesis_only_evaluation(run_hypothesis_only_evaluation)
 # 
 # You needn't include your uses of `nli.wordentail_experiment` with these functions, but we assume you'll be curious to see how they do!
 
-# In[ ]:
+# In[27]:
 
 
 def vec_diff(u, v):
     ##### YOUR CODE HERE
-    # pass
     return u - v
 
 
@@ -361,11 +358,11 @@ def vec_diff(u, v):
     
 def vec_max(u, v):
     ##### YOUR CODE HERE
-    # pass
     return np.maximum(u, v)
 
 
-# In[ ]:
+
+# In[28]:
 
 
 def test_vec_diff(vec_diff):
@@ -376,13 +373,13 @@ def test_vec_diff(vec_diff):
     assert np.array_equal(result, expected),         "Expected {}; got {}".format(expected, result)
 
 
-# In[ ]:
+# In[29]:
 
 
 test_vec_diff(vec_diff)
 
 
-# In[ ]:
+# In[30]:
 
 
 def test_vec_max(vec_max):
@@ -393,10 +390,29 @@ def test_vec_max(vec_max):
     assert np.array_equal(result, expected),         "Expected {}; got {}".format(expected, result)
 
 
-# In[ ]:
+# In[31]:
 
 
 test_vec_max(vec_max)
+
+
+# In[32]:
+
+
+if 'IS_GRADESCOPE_ENV' not in os.environ:
+    
+    net = TorchShallowNeuralClassifier(hidden_dim=50, max_iter=100)
+    print(net)
+    
+    for vec_combo_func in [vec_diff, vec_max, vec_concatenate, hypothesis_only]:
+        result = nli.wordentail_experiment(
+            train_data=wordentail_data['word_disjoint']['train'],
+            assess_data=wordentail_data['word_disjoint']['dev'],
+            model=net,
+            vector_func=glove_vec,
+            vector_combo_func=vec_combo_func)
+
+        print("macro-f1: {0}".format(result['macro-F1']))
 
 
 # ### A deeper network [2 points]
@@ -431,7 +447,7 @@ test_vec_max(vec_max)
 # 
 # You can use `test_TorchDeepNeuralClassifier` to ensure that your network has the intended structure.
 
-# In[ ]:
+# In[33]:
 
 
 import torch.nn as nn
@@ -440,7 +456,7 @@ class TorchDeepNeuralClassifier(TorchShallowNeuralClassifier):
     def __init__(self, dropout_prob=0.7, **kwargs):
         self.dropout_prob = dropout_prob
         super().__init__(**kwargs)
-
+    
     def define_graph(self):
         """Complete this method!
         
@@ -461,11 +477,21 @@ class TorchDeepNeuralClassifier(TorchShallowNeuralClassifier):
 
     
 
-##### YOUR CODE HERE    
+##### YOUR CODE HERE  
+if 'IS_GRADESCOPE_ENV' not in os.environ:
+    net = TorchDeepNeuralClassifier()
+    for vec_combo_func in [vec_diff, vec_max, vec_concatenate, hypothesis_only]:
+        result = nli.wordentail_experiment(
+            train_data=wordentail_data['word_disjoint']['train'],
+            assess_data=wordentail_data['word_disjoint']['dev'],
+            model=net,
+            vector_func=glove_vec,
+            vector_combo_func=vec_combo_func)
+
+        print("macro-f1: {0}".format(result['macro-F1']))
 
 
-
-# In[ ]:
+# In[34]:
 
 
 def test_TorchDeepNeuralClassifier(TorchDeepNeuralClassifier):
@@ -491,7 +517,7 @@ def test_TorchDeepNeuralClassifier(TorchDeepNeuralClassifier):
     assert graph[1].p == dropout_prob,         "The user's value for `dropout_prob` should be the value of `p` for the Dropout layer."
 
 
-# In[ ]:
+# In[35]:
 
 
 test_TorchDeepNeuralClassifier(TorchDeepNeuralClassifier)
@@ -509,10 +535,215 @@ test_TorchDeepNeuralClassifier(TorchDeepNeuralClassifier)
 # 
 # In the cell below, please provide a brief technical description of your original system, so that the teaching team can gain an understanding of what it does. This will help us to understand your code and analyze all the submissions to identify patterns and strategies.
 
-# In[ ]:
+# In[40]:
 
 
 # Enter your system description in this cell.
+
+# Tried out different systems:
+# system_0 : Original system. 
+#            Uses bidirectional RNN classifier (0.68)
+#            Choosing this as original system.
+
+# system_1 : Variations of vector_combo_func (0.70)
+# system_2 : Retrofit GLOVE using WordNet (0.64)
+# system_3 : Data augmentation of 'entails' class using WordNet to avoid imbalance during training. (0.48)
+
+# My peak score was: 0.68
+
+if 'IS_GRADESCOPE_ENV' not in os.environ:
+    from nltk.corpus import wordnet as wn
+    from retrofitting import Retrofitter
+    from torch_rnn_classifier import TorchRNNClassifier
+    
+    def get_wordnet_edges():
+        edges = defaultdict(set)
+        for ss in wn.all_synsets():
+            lem_names = {lem.name() for lem in ss.lemmas()}
+            for lem in lem_names:
+                edges[lem] |= lem_names
+        return edges
+
+    wn_edges = get_wordnet_edges()
+    
+    # Idea: Bidirectional RNN classifier
+    def system_0_original():
+        
+        # Data------------     
+        with open(wordentail_filename) as f:
+            wordentail_data = json.load(f)
+        
+        print("Distribution of labels : \n{0}".format(pd.DataFrame(wordentail_data['word_disjoint']['train'])[1].value_counts()))
+
+        # Model-----------
+        X_glove = pd.DataFrame(GLOVE)
+        X_glove['$UNK'] = 0
+        X_glove = X_glove.T
+    
+        vocab = list(X_glove.index)
+        embedding = X_glove.values
+        net = TorchRNNClassifier(vocab=vocab, embedding=embedding, bidirectional=True)
+        
+        # Exp-------------
+        result = nli.wordentail_experiment(
+            train_data=wordentail_data['word_disjoint']['train'],
+            assess_data=wordentail_data['word_disjoint']['dev'],
+            model=net,
+            vector_func=lambda x: np.array([x]),
+            vector_combo_func=vec_concatenate)
+
+        return result['macro-F1']
+        
+    #############################################################################
+    # Idea: Variations of vector_combo_func.
+    def system_1():
+        
+        # Data------------         
+        with open(wordentail_filename) as f:
+            wordentail_data = json.load(f)
+        
+        print("Distribution of labels : \n{0}".format(pd.DataFrame(wordentail_data['word_disjoint']['train'])[1].value_counts()))
+
+        def vec_merge(u, v):
+            """Merge different feature reps including array diff, max, avg etc."""
+            return np.concatenate((u, v, vec_diff(u, v), vec_max(u,v)))
+        
+        # Model-----------
+        net = TorchShallowNeuralClassifier(hidden_dim=50, max_iter=100)
+        print(net)
+        
+        # Exp-------------
+        result = nli.wordentail_experiment(
+            train_data=wordentail_data['word_disjoint']['train'],
+            assess_data=wordentail_data['word_disjoint']['dev'],
+            model=net,
+            vector_func=glove_vec,
+            vector_combo_func=vec_merge)
+
+        return result['macro-F1']
+
+    #######################################################################
+    # Idea: Retrofit GLOVE using WordNet
+    def system_2():
+        
+        # Data------------   
+        with open(wordentail_filename) as f:
+            wordentail_data = json.load(f)
+
+        X_glove = pd.DataFrame(GLOVE).T
+        print(X_glove.shape)
+
+        def convert_edges_to_indices(edges, Q):
+            lookup = dict(zip(Q.index, range(Q.shape[0])))
+            index_edges = defaultdict(set)
+            for start, finish_nodes in edges.items():
+                s = lookup.get(start)
+                if s:
+                    f = {lookup[n] for n in finish_nodes if n in lookup}
+                    if f:
+                        index_edges[s] = f
+            return index_edges
+
+        wn_index_edges = convert_edges_to_indices(wn_edges, X_glove)
+        wn_retro = Retrofitter(verbose=True)
+        X_retro = wn_retro.fit(X_glove, wn_index_edges)
+        print(X_retro.shape)
+
+        def retro_vec(w):    
+            """Return `w`'s Retrofitted representation if available, else return 
+            a random vector."""
+            return X_retro.loc[w].values if w in X_retro.index else randvec(w, n=glove_dim)
+
+        # Model-----------
+        net = TorchShallowNeuralClassifier(hidden_dim=50, max_iter=100)
+        print(net)
+
+        # Exp-------------
+        result = nli.wordentail_experiment(
+            train_data=wordentail_data['word_disjoint']['train'],
+            assess_data=wordentail_data['word_disjoint']['dev'],
+            model=net,
+            vector_func=retro_vec,
+            vector_combo_func=vec_concatenate)
+
+        return result['macro-F1']
+        
+    ################################################################
+    # Idea: Data augmentation of 'entails' class using wordnet
+    def system_3():
+        
+        # Data------------  
+        with open(wordentail_filename) as f:
+            wordentail_data = json.load(f)
+
+        x_train = wordentail_data['word_disjoint']['train']
+        print("Existing distribution of labels : \n{0}".format(pd.DataFrame(x_train)[1].value_counts()))
+
+        # get wordnet edges
+        def get_wordnet_edges():
+            edges = defaultdict(set)
+            for ss in wn.all_synsets():
+                lem_names = {lem.name() for lem in ss.lemmas()}
+                for lem in lem_names:
+                    edges[lem] |= lem_names
+            return edges
+
+        wn_edges = get_wordnet_edges()
+
+        # data augmentation of positive entailments.
+        positive_entailments = []
+        for premise_hypothesis, label in x_train:
+            if label == 1:
+                positive_entailments.append(premise_hypothesis)
+
+        print("Current count of positives: {0}".format(len(positive_entailments)))
+
+        positive_entailments_ex = []
+        for premise_hypothesis in positive_entailments:
+            premise = premise_hypothesis[0]
+            hypothesis = premise_hypothesis[1]
+
+            for wn_premise in wn_edges[premise]:
+                if premise == wn_premise:
+                    continue
+                for wn_hypothesis in wn_edges[hypothesis]:
+                    if wn_hypothesis == hypothesis:
+                        continue
+
+                    positive_entailments_ex.append([wn_premise, wn_hypothesis])
+
+        print("New count of positives to add: {0}".format(len(positive_entailments_ex)))
+        x_train.extend([[item, 1] for item in positive_entailments_ex])
+
+        print("New distribution of labels : \n{0}".format(pd.DataFrame(wordentail_data['word_disjoint']['train'])[1].value_counts()))
+
+        # Model-----------
+        net = TorchShallowNeuralClassifier(hidden_dim=50, max_iter=100)
+        
+        # Exp-------------
+        result = nli.wordentail_experiment(
+            train_data=wordentail_data['word_disjoint']['train'],
+            assess_data=wordentail_data['word_disjoint']['dev'],
+            model=net,
+            vector_func=glove_vec,
+            vector_combo_func=vec_concatenate)
+
+        return result['macro-F1']
+    
+    ###################################################################
+    print("System 0 (Original) Score:{0}".format(system_0_original()))
+    print("="*100)
+    
+#     print("System 1 Score:{0}".format(system_1()))
+#     print("="*100)
+    
+#     print("System 2 Score:{0}".format(system_2()))  
+#     print("="*100)
+    
+#     print("System 3 Score:{0}".format(system_3()))  
+#     print("="*100)
+    ####################################################################
+    
 # Please do not remove this comment.
 
 
