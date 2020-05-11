@@ -512,6 +512,8 @@ class ContextualColorDescriber(TorchModelBase):
             pin_memory=True,
             collate_fn=dataset.collate_fn)
 
+        self.model.to(self.device)  # fix
+
         self.model.eval()
 
         softmax = nn.Softmax(dim=2)
