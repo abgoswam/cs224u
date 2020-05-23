@@ -1,0 +1,10 @@
+\begin{thebibliography}{1}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Ando and Zhang(2005)}]{Ando2005}
+Rie~Kubota Ando and Tong Zhang. 2005.
+\newblock A framework for learning predictive structures from multiple tasks
+  and unlabeled data.
+\newblock \emph{Journal of Machine Learning Research}, 6:1817--1853.
+
+\end{thebibliography}
