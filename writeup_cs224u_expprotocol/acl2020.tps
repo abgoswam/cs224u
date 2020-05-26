@@ -17,7 +17,7 @@ Class=LaTeXView
 Document=acl2020.tex
 
 [Frame0_View0,0]
-TopLine=34
+TopLine=40
 Cursor=1851
 
 [Frame1]

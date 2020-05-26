@@ -12,13 +12,13 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1586
-NormalPos.bottom=348
+NormalPos.bottom=556
 Class=LaTeXView
 Document=acl2020.tex
 
 [Frame0_View0,0]
-TopLine=53
-Cursor=21115
+TopLine=108
+Cursor=5317
 
 [Frame1]
 Flags=0
@@ -30,7 +30,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1586
-NormalPos.bottom=348
+NormalPos.bottom=556
 Class=LaTeXView
 Document=introduction.tex
 
@@ -48,7 +48,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1586
-NormalPos.bottom=348
+NormalPos.bottom=556
 Class=LaTeXView
 Document=credits.tex
 
@@ -66,7 +66,7 @@ MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
 NormalPos.right=1586
-NormalPos.bottom=348
+NormalPos.bottom=556
 Class=BibTeXView
 Document=acl2020.bib
 
@@ -76,5 +76,5 @@ Cursor=0
 
 [SessionInfo]
 FrameCount=4
-ActiveFrame=3
+ActiveFrame=0
 

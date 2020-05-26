@@ -1,8 +1,8 @@
 SyncTeX Version:1
-Input:1:H:\_hackerreborn\cs224u\writeup_cs224u_blah\acl2020.tex
+Input:1:H:\_hackerreborn\cs224u\writeup_cs224u_acl2020_template_dropanthology\acl2020.tex
 Input:2:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\article.cls
 Input:3:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\size11.clo
-Input:4:H:\_hackerreborn\cs224u\writeup_cs224u_blah\acl2020.sty
+Input:4:H:\_hackerreborn\cs224u\writeup_cs224u_acl2020_template_dropanthology\acl2020.sty
 Input:5:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\hyperref.sty
 Input:6:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\hobsub-hyperref.sty
 Input:7:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\hobsub-generic.sty
@@ -27,18 +27,18 @@ Input:25:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\late
 Input:26:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\microtype\microtype.sty
 Input:27:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\microtype\microtype-pdftex.def
 Input:28:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\microtype\microtype.cfg
-Input:29:H:\_hackerreborn\cs224u\writeup_cs224u_blah\acl2020.aux
+Input:29:H:\_hackerreborn\cs224u\writeup_cs224u_acl2020_template_dropanthology\acl2020.aux
 Input:30:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd
 Input:31:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\nameref.sty
 Input:32:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\gettitlestring.sty
-Input:33:H:\_hackerreborn\cs224u\writeup_cs224u_blah\acl2020.out
-Input:34:H:\_hackerreborn\cs224u\writeup_cs224u_blah\acl2020.out
+Input:33:H:\_hackerreborn\cs224u\writeup_cs224u_acl2020_template_dropanthology\acl2020.out
+Input:34:H:\_hackerreborn\cs224u\writeup_cs224u_acl2020_template_dropanthology\acl2020.out
 Input:35:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\context\base\supp-pdf.mkii
 Input:36:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\microtype\mt-ptm.cfg
 Input:37:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\microtype\mt-cmr.cfg
 Input:38:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ulasy.fd
-Input:39:H:\_hackerreborn\cs224u\writeup_cs224u_blah\credits.tex
-Input:40:H:\_hackerreborn\cs224u\writeup_cs224u_blah\introduction.tex
+Input:39:H:\_hackerreborn\cs224u\writeup_cs224u_acl2020_template_dropanthology\credits.tex
+Input:40:H:\_hackerreborn\cs224u\writeup_cs224u_acl2020_template_dropanthology\introduction.tex
 Input:41:C:\Users\agoswami\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd
 Output:pdf
 Magnification:1000
@@ -46,7 +46,7 @@ Unit:1
 X Offset:0
 Y Offset:0
 Content:
-!3678
+!3860
 {1
 [1,92:4736286,52155292:29834876,47419006,0
 h1,92:4736286,4736286:0,0,0
@@ -12850,8 +12850,8 @@ h1,429:4736286,52155292:29834876,0,0
 ]
 !64386
 }5
-Input:43:H:\_hackerreborn\cs224u\writeup_cs224u_blah\acl2020.bbl
-!75
+Input:43:H:\_hackerreborn\cs224u\writeup_cs224u_acl2020_template_dropanthology\acl2020.bbl
+!101
 {6
 [43,43:4736286,52155292:29834876,47419006,0
 [43,43:4736286,4736286:0,0,0
@@ -15337,7 +15337,7 @@ h43,43:4736286,52155292:29834876,0,0
 ]
 ]
 ]
-!62295
+!62296
 }6
 !10
 {7
@@ -16811,9 +16811,9 @@ h1,510:4736286,52155292:29834876,0,0
 ]
 !36176
 }7
-Input:44:H:\_hackerreborn\cs224u\writeup_cs224u_blah\acl2020.aux
-!75
+Input:44:H:\_hackerreborn\cs224u\writeup_cs224u_acl2020_template_dropanthology\acl2020.aux
+!101
 Postamble:
 Count:9636
-!26
+!27
 Post scriptum:

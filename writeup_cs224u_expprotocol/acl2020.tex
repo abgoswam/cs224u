@@ -18,6 +18,9 @@
 \usepackage{latexsym}
 \renewcommand{\UrlFont}{\ttfamily\small}
 
+\usepackage{array, booktabs}
+\usepackage{geometry}
+
 % This is not strictly necessary, and may be commented out,
 % but it will improve the layout of the manuscript,
 % and will typically save some space.
@@ -34,10 +37,10 @@
 
 \newcommand\BibTeX{B\textsc{ib}\TeX}
 
-\title{Literature Review for CS224U, Spring 2020.}
+\title{Experiment Protocol for CS224U, Spring 2020.}
 
 \author{Abhishek Goswami \\
-  Microsoft \\
+  Microsoft / Redmond, WA \\
   \texttt{agoswami@microsoft.com}}
 
 %\author{First Author \\
@@ -54,18 +57,27 @@
 \date{}
 
 \begin{document}
+
 \maketitle
 
 \begin{abstract}
 
-This is a literature review for CS224U, Spring 2020 quarter. 
+This document sets the experiment protocol for CS224U, Spring 2020 quarter. 
+
 \end{abstract}
 
 
-\input{generalproblem}
-\input{articlesummary}
-\input{compareandcontrast}
-\input{futurework}
+%\input{generalproblem}
+%\input{articlesummary}
+%\input{compareandcontrast}
+%\input{futurework}
+
+\input{hypothesis}
+\input{data}
+\input{metrics}
+\input{models}
+\input{reasoning}
+\input{progress}
 
 \bibliography{acl2020}
 \bibliographystyle{acl_natbib}

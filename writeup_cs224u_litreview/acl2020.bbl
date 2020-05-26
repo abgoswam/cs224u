@@ -1,4 +1,4 @@
-\begin{thebibliography}{7}
+\begin{thebibliography}{6}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Clark et~al.(2019)Clark, Khandelwal, Levy, and
@@ -41,13 +41,5 @@ Yixin Nie, Adina Williams, Emily Dinan, Mohit Bansal, Jason Weston, and Douwe
 Anna Rogers, Olga Kovaleva, and Anna Rumshisky. 2020.
 \newblock A primer in bertology: What we know about how bert works.
 \newblock \emph{arXiv preprint arXiv:2002.12327}.
-
-\bibitem[{Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
-  Gomez, Kaiser, and Polosukhin}]{vaswani2017attention}
-Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
-  Aidan~N Gomez, {\L}ukasz Kaiser, and Illia Polosukhin. 2017.
-\newblock Attention is all you need.
-\newblock In \emph{Advances in neural information processing systems}, pages
-  5998--6008.
 
 \end{thebibliography}
