@@ -7,13 +7,37 @@
 \begin{tabular}{@{}@{}l*{6}{c}@{}}
 
 \toprule
- System                 		& \multicolumn{2}{c@{}}{Dev Set}\\             
-														& MNLI-(m/mm)    	& ANLI-r1  \\
+Categories             					& \multicolumn{1}{c}{Train Set}
+																& \multicolumn{1}{c}{Dev Set}
+																& \multicolumn{1}{c@{}}{Test Set}\\             
+																& MNLI	& MNLI-(m/mm)	& ANLI-r1  \\
 \midrule
-BERT\textsubscript{BASE}    & 84.1/84.4 			& 26.0 \\
+Contradiction    								& 130,903	& 3,213/3,240	& 333 \\
+Entailment    									& 130,899	& 3,479/3,463	& 334 \\
+Neutral    											& 130,900 & 3,123/3,129	& 333 \\
 \bottomrule
 \end{tabular}
-\caption{\label{table:accuracy} Systems trained on MNLI}
+\caption{\label{table:eda} Distribution for the Train/Dev/Test sets}
+\end{table}
+
+
+\begin{table}
+\small
+\centering
+\begin{tabular}{@{}@{}l*{6}{c}@{}}
+
+\toprule
+ System                 				& \multicolumn{1}{c}{Dev Set}
+																& \multicolumn{2}{c@{}}{Test Set}\\             
+																& MNLI-(m/mm)    	& ANLI-r1  \\
+\midrule
+Random    											& 33.8/33.2 			& 33.3 \\
+Baseline    										& 50.3/49.6 			& 28.9 \\
+BERT\textsubscript{BASE}    		& 84.1/84.4 			& 26.0 \\
+ROBERTa\textsubscript{LARGE}    & 92.0/90.0 			& 46.0 \\
+\bottomrule
+\end{tabular}
+\caption{\label{table:accuracy} Evaluation results on the Dev/Test sets}
 \end{table}
 
 
