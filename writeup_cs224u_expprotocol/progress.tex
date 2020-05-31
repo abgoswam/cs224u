@@ -1,78 +1,38 @@
 \section{Progress Summary}
 \label{sec:progress}
 
-\begin{table}
-\small
-\centering
-\begin{tabular}{@{}@{}l*{6}{c}@{}}
-
-\toprule
-Categories             					& \multicolumn{1}{c}{Train Set}
-																& \multicolumn{1}{c}{Dev Set}
-																& \multicolumn{1}{c@{}}{Test Set}\\             
-																& MNLI	& MNLI-(m/mm)	& ANLI-r1  \\
-\midrule
-Contradiction    								& 130,903	& 3,213 / 3,240	& 333 \\
-Entailment    									& 130,899	& 3,479 / 3,463	& 334 \\
-Neutral    											& 130,900 & 3,123 / 3,129	& 333 \\
-\bottomrule
-\end{tabular}
-\caption{\label{table:eda} Distribution for the Train/Dev/Test sets}
-\end{table}
+% what you have been done \ref{table:accuracy}, what you still need to do, and any obstacles or concerns that might prevent your project from coming to fruition 
 
 
-%\begin{table}
-%\small
-%\centering
-%\begin{tabular}{@{}@{}l*{6}{c}@{}}
-%
-%\toprule
- %System                 				& \multicolumn{1}{c}{Dev Set}
-																%& \multicolumn{2}{c@{}}{Test Set}\\             
-																%& MNLI-(m/mm)    	& ANLI-r1  \\
-%\midrule
-%Random    											& 33.8 / 33.2 			& 33.3 \\
-%Baseline    										& 50.3 / 49.6 			& 28.9 \\
-%BERT\textsubscript{BASE}    		& 84.1 / 84.4 			& 26.0 \\
-%ROBERTa\textsubscript{LARGE}    & 92.0 / 90.0 			& 46.0 \\
-%\bottomrule
-%\end{tabular}
-%\caption{\label{table:accuracy} Evaluation results on the Dev/Test sets}
-%\end{table}
 
-\begin{table*}
-\small
-\centering
-\begin{tabular}{l ccccccc | c c}
+In this section, we report the progress we have made so far. Table \ref{table:accuracy} shows a comprehensive view of the experiments done so far.
 
-\toprule
-																														System
-                                        & \multicolumn{7}{c|}{Training Data Ratio} 
-                                        & \multicolumn{1}{c}{Dev Acc}   
-                                        & \multicolumn{1}{c}{Test Acc} \\ 
-                                        
-																														& MNLI      & MRPC  & QQP			&STSB		&QNLI    	& RTE		& WNLI   	& MNLI-(m/mm)   & ANLI-r1  \\
-																														& (400k)    & (3k)  & (364k)	& (5k)	& (105k)	& (2k)  & (635)		& (10k / 10k)   & (1k)  \\
-\midrule
-Random    																									& 1.0       & - 		& - 			& -			& - 			& -			& -				& 33.8 / 33.2   & 33.3 \\
-Baseline    																								& 1.0       & - 		& - 			& -			& -				& -			& -				& 50.3 / 49.6   & 28.9 \\
-BERT\textsubscript{BASE}    		    												& 1.0       & - 		& - 			& -			& -				& -			& -				& 84.1 / 84.4   & 26.0 \\
-ROBERTa\textsubscript{BASE}            											& 1.0       & - 		& - 			& -			& -				& -			& -				& 87.7 / 87.6   & 28.5 \\
-ROBERTa\textsubscript{LARGE}            										& 1.0       & - 		& - 			& -			& -				& -			& -				& 92.0 / 90.0   & 46.0 \\
-\midrule
-\multirow{2}{*}{\shortstack[l]{BERT\textsubscript{BASE}\\ with weak supervision}}	   		    				
-																														& 0.1 			& 0.1 	& 0.1 		& -			& -				& -			& -				& 76.9 / 77.2		& 23.2 \\
-																														& 0.1 			& 0.1 	& 0.1 		& 0.1		& 0.1			& 0.1		& 0.1			& 77.3 / 77.6		& 25.8 \\
-\midrule
-\multirow{2}{*}{\shortstack[l]{ROBERTa\textsubscript{BASE}\\ with weak supervision}}	 
-																														& 0.1 			& 0.1 	& 0.1 		& -			& -				& -			& -				& 83.6 / 84.1		& 26.0 \\  		    				
-																														& 0.1 			& 0.1 	& 0.1 		& 0.1		& 0.1			& 0.1		& 0.1			& 83.6 / 84.3		& 29.3 \\
-																														
+\subsection{Training on MNLI only}
+\label{subsec:trainmnli}
 
-\bottomrule
-\end{tabular}
-\caption{\label{table:accuracy} Evaluation results on the Dev/Test sets}
-\end{table*}
+A random guessing strategy gives a accuracy of 33.3\% on both the Dev and Test sets which is intuitive given that we have 3 labels which are uniformly distributed (See Section \ref{sec:data}). 
 
+Compared to Random, our Baseline model does better on the Dev set indicating it has picked up signal from the MNLI training data. However, it does worse than Random in the adversarial evaluation setting when evaluated on the ANLI-A1 test set. We see similar behaviour for both the `simple' Transformer-based models, . When trained on MNLI data both BERT\textsubscript{BASE} and RoBERTa\textsubscript{BASE} do remarkably well on the Dev set, but do quite poorly on the ANLI-A1 test set. In this setting, only RoBERTa\textsubscript{LARGE} is able to outperform Random on the Test set.
 
-what you have been done \ref{table:accuracy}, what you still need to do, and any obstacles or concerns that might prevent your project from coming to fruition \cite{devlin-etal-2019-bert}
+\subsection{Analyzing Transformer models on Adversarial data}
+\label{subsec:analyzetransformeradversarial}
+
+We try to understand what Transformed-based models are doing from two perspectives (a) Error analysis and (b) Role of the attention heads. For this we continue to use models trained on MNLI only. \\
+
+\noindent {\bf Error Analysis:} We look at some examples where \textit{both} BERT\textsubscript{BASE} and RoBERTa\textsubscript{BASE} are wrong, while being in perfect agreement with each other. Table \ref{table:erroranalysis} shows one example from each such category. This leads to a few observations:
+
+\begin{itemize}
+	\item Adversaries are exploiting numerical abilities, including in some cases the inability of the models to do math.  
+	\item Both models seem to biased towards predicting the \texttt{contradiction} label, with the number of predicted \texttt{contradiction} labels being almost 20\% more than the number of \texttt{entailment} labels.
+	
+\end{itemize}
+
+\noindent {\bf Attention heads:} We look at the role of attention heads for both the standard evaluation setting (using MNLI-m as the target dataset) and for the adversarial evaluation setting (using ANLI-A1 as the target dataset). In \cite{michel2019sixteen} the authors note that at test time, many attention heads can be re-
+moved individually without impacting model performance. In Section \ref{subsec:trainmnli} we noted that a BERT\textsubscript{BASE} trained on MNLI data did did worse than Random on the ANLI-A1 test set. Interestingly, we saw that we had to prune almost 90\% of the attention heads of the model for it to match Random. Figure \ref{fig:attentionheads} accuracy of a BERT\textsubscript{BASE} model as a function of the number of attention heads. The BERT\textsubscript{BASE} model was trained on MNLI only data.
+
+\subsection{Training on multiple data sources}
+\label{subsec:trainmultiple}
+
+In line with our stated hypothesis, we now mix multiple datasets to construct our train data. The hope is that this will enable us to capture a diverse range of latent signals from multiple data generation processes. For efficiency purposes, we currently sample from the data ratio to gain an intuition on how well our models are doing. In this setting, we only report the results for the BERT\textsubscript{BASE} and RoBERTa\textsubscript{BASE} models
+
+Unfortunately, so far our results are in line with the observations in Section \ref{subsec:trainmnli}. Both the transformer models are doing remarkably well on the Dev set, but poorly on the ANLI-A1 Test set.

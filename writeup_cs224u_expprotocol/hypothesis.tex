@@ -1,4 +1,15 @@
 \section{Hypothesis}
 \label{sec:hypothesis}
 
-A statement of the project's core hypothesis or hypotheses.
+%A statement of the project's core hypothesis or hypotheses.
+
+Natural language inference (NLI) is the task of determining if a natural language hypothesis can be inferred from a given premise in a justifiable manner. Existing models perform well at standard evaluations for NLI, achieving impressive results in leaderboards such as GLUE. However, a growing body of evidence \cite{mccoy2019right, glockner2018breaking} shows that state-of-the-art models learn to exploit spurious statistical patterns in datasets instead of learning meaning in the flexible and generalizable way. NLI adversarial evaluations, where existing state-of-the art NLI systems are evaluated on a completely unseen new test dataset, further exposes these concerns. State-of-the art NLI systems perform quite poorly in the adversarial evaluation setting \cite{nie2019adversarial}, reflecting that such systems do not represent true competence at natural language understanding. This begs the question: If a system fails an NLI adversarial evaluation, is it a failing of the model or of the dataset used to develop the model?
+
+In this work, we hypothesize that the failings in the adversarial evaluation setting come from the dataset used to develop the model. Standard evaluations in NLI typically use datasets generated using a single generation process. We argue that these standalone, per-dataset generation processes encode latent signals in the premise/hypothesis construction. This leads to favorable results in the standard evaluation setting, but fail spectacularly in the the adversarial evaluation setting. We believe this can be improved by using a mix of multiple datasets during the training process. This setting enables us to leverage several related sentence pair datasets, while avoiding per-dataset statistical concerns.
+
+
+  
+
+
+
+

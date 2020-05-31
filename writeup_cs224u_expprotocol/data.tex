@@ -1,4 +1,63 @@
 \section{Data}
 \label{sec:data}
 
-A description of the dataset(s) that the project will use for evaluation.
+%A description of the dataset(s) that the project will use for evaluation.
+
+In this section we provide a description of the datasets that we use in this project. We also describe also how we cast some of these datasets for the NLI task, as a form of weak supervision. Table \ref{table:labeldistribution} gives a summary of the distribution of labels across different datasets.
+
+\begin{table*}
+\small
+\centering
+\begin{tabular}{l ccccccc | c c}
+
+\toprule
+Categories
+                                        & \multicolumn{7}{c|}{Training Datasets} 
+                                        & \multicolumn{1}{c}{Dev Set}   
+                                        & \multicolumn{1}{c}{Test Set} \\ 
+                                        
+																				& MNLI      & MRPC  	& QQP				&STSB				&QNLI    		& RTE				& WNLI   	& MNLI-(m/mm)   	& ANLI-A1  \\
+\midrule
+
+Contradiction														& 131k			& 1194 		& 229k 			& 1773			& 52k 			& 1241			& 312			& 3,213 / 3,240   & 333 \\
+Entailment   								 		    		& 131k  		& 2474 		& 134k 			& 1052			& 52k				& 1249			& 323			& 3,479 / 3,463   & 334 \\
+Neutral    															& 131k  		& - 			& - 				& 2924			& -					& -					& -				& 3,123 / 3,129   & 333 \\
+
+\bottomrule
+\end{tabular}
+
+\caption{\label{table:labeldistribution} Distribution of labels across different datasets}
+\end{table*}
+
+\subsection{Test Set}
+\label{subsec:testset}
+
+For our test set we use the Adverserial NLI dataset, as described in \cite{nie2019adversarial}. More specifically we choose the test set from Round 1. By construction, this test set poses a serious challenge to our models. The examples in this dataset were verified as correct by human annotators. But a state-of-the-art BERT\textsubscript{LARGE} model trained on SNLI \cite{bowman2015large} and MNLI \cite{williams2017broad} datasets got them all wrong. Also, in the spirit of adversarial evaluation, we do not consider any other ANLI datasets during training. 
+
+\subsection{Dev Set}
+\label{subsec:devset}
+
+For our dev set we use both the matched and mismatched dev sets which are part of the MNLI dataset. We chose this as our dev set because it contains all the three different labels of interest. Please do note that since we are interested in the adversarial evaluation setting, the choice of dev set is purely arbitrary. 
+
+\subsection{Train Set}
+\label{subsec:trainset}
+
+We give a brief summary of the different datasets that we consider in our mix for training. The common theme for all these datasets is that they lend themselves to pairwise text classification. We argue that each of them can be cast for the NLI setting. \\
+
+\noindent {\bf MNLI:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+
+\noindent {\bf MRPC:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+
+\noindent {\bf QQP:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+
+\noindent {\bf STSB:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+
+\noindent {\bf QNLI:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+
+\noindent {\bf RTE:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+
+\noindent {\bf WNLI:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+
+
+
+
