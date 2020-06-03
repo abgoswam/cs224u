@@ -1,5 +1,19 @@
-\begin{thebibliography}{6}
+\begin{thebibliography}{19}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Bar-Haim et~al.(2006)Bar-Haim, Dagan, Dolan, Ferro, Giampiccolo,
+  Magnini, and Szpektor}]{bar2006second}
+Roy Bar-Haim, Ido Dagan, Bill Dolan, Lisa Ferro, Danilo Giampiccolo, Bernardo
+  Magnini, and Idan Szpektor. 2006.
+\newblock The second pascal recognising textual entailment challenge.
+\newblock In \emph{Proceedings of the second PASCAL challenges workshop on
+  recognising textual entailment}, volume~6, pages 6--4. Venice.
+
+\bibitem[{Bentivogli et~al.(2009)Bentivogli, Clark, Dagan, and
+  Giampiccolo}]{bentivogli2009fifth}
+Luisa Bentivogli, Peter Clark, Ido Dagan, and Danilo Giampiccolo. 2009.
+\newblock The fifth pascal recognizing textual entailment challenge.
+\newblock In \emph{TAC}.
 
 \bibitem[{Bowman et~al.(2015)Bowman, Angeli, Potts, and
   Manning}]{bowman2015large}
@@ -8,12 +22,73 @@ Samuel~R Bowman, Gabor Angeli, Christopher Potts, and Christopher~D Manning.
 \newblock A large annotated corpus for learning natural language inference.
 \newblock \emph{arXiv preprint arXiv:1508.05326}.
 
+\bibitem[{Cer et~al.(2017)Cer, Diab, Agirre, Lopez-Gazpio, and
+  Specia}]{cer-etal-2017-semeval}
+Daniel Cer, Mona Diab, Eneko Agirre, I{\~n}igo Lopez-Gazpio, and Lucia Specia.
+  2017.
+\newblock \href {https://doi.org/10.18653/v1/S17-2001} {{S}em{E}val-2017 task
+  1: Semantic textual similarity multilingual and crosslingual focused
+  evaluation}.
+\newblock In \emph{Proceedings of the 11th International Workshop on Semantic
+  Evaluation ({S}em{E}val-2017)}, pages 1--14, Vancouver, Canada. Association
+  for Computational Linguistics.
+
+\bibitem[{Dagan et~al.(2005)Dagan, Glickman, and Magnini}]{dagan2005pascal}
+Ido Dagan, Oren Glickman, and Bernardo Magnini. 2005.
+\newblock The pascal recognising textual entailment challenge.
+\newblock In \emph{Machine Learning Challenges Workshop}, pages 177--190.
+  Springer.
+
+\bibitem[{Devlin et~al.(2019)Devlin, Chang, Lee, and
+  Toutanova}]{devlin-etal-2019-bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2019.
+\newblock \href {https://doi.org/10.18653/v1/N19-1423} {{BERT}: Pre-training of
+  deep bidirectional transformers for language understanding}.
+\newblock In \emph{Proceedings of the 2019 Conference of the North {A}merican
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 1 (Long and Short Papers)}, pages 4171--4186,
+  Minneapolis, Minnesota. Association for Computational Linguistics.
+
+\bibitem[{Dolan and Brockett(2005)}]{dolan-brockett-2005-automatically}
+William~B. Dolan and Chris Brockett. 2005.
+\newblock \href {https://www.aclweb.org/anthology/I05-5002} {Automatically
+  constructing a corpus of sentential paraphrases}.
+\newblock In \emph{Proceedings of the Third International Workshop on
+  Paraphrasing ({IWP}2005)}.
+
+\bibitem[{Giampiccolo et~al.(2007)Giampiccolo, Magnini, Dagan, and
+  Dolan}]{giampiccolo2007third}
+Danilo Giampiccolo, Bernardo Magnini, Ido Dagan, and Bill Dolan. 2007.
+\newblock The third pascal recognizing textual entailment challenge.
+\newblock In \emph{Proceedings of the ACL-PASCAL workshop on textual entailment
+  and paraphrasing}, pages 1--9. Association for Computational Linguistics.
+
 \bibitem[{Glockner et~al.(2018)Glockner, Shwartz, and
   Goldberg}]{glockner2018breaking}
 Max Glockner, Vered Shwartz, and Yoav Goldberg. 2018.
 \newblock Breaking nli systems with sentences that require simple lexical
   inferences.
 \newblock \emph{arXiv preprint arXiv:1805.02266}.
+
+\bibitem[{Iyer et~al.(2017)Iyer, Dandekar, and Csernai}]{WinNT}
+Shankar Iyer, Nikhil Dandekar, and Kornel Csernai. 2017.
+\newblock \href
+  {https://data.quora.com/First-Quora-Dataset-Release-Question-Pairs} {First
+  quora dataset release: Question pairs}.
+
+\bibitem[{Levesque et~al.(2012)Levesque, Davis, and
+  Morgenstern}]{levesque2012winograd}
+Hector Levesque, Ernest Davis, and Leora Morgenstern. 2012.
+\newblock The winograd schema challenge.
+\newblock In \emph{Thirteenth International Conference on the Principles of
+  Knowledge Representation and Reasoning}.
+
+\bibitem[{Liu et~al.(2019)Liu, Ott, Goyal, Du, Joshi, Chen, Levy, Lewis,
+  Zettlemoyer, and Stoyanov}]{liu2019roberta}
+Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer
+  Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. 2019.
+\newblock Roberta: A robustly optimized bert pretraining approach.
+\newblock \emph{arXiv preprint arXiv:1907.11692}.
 
 \bibitem[{McCoy et~al.(2019)McCoy, Pavlick, and Linzen}]{mccoy2019right}
 R~Thomas McCoy, Ellie Pavlick, and Tal Linzen. 2019.
@@ -33,6 +108,31 @@ Yixin Nie, Adina Williams, Emily Dinan, Mohit Bansal, Jason Weston, and Douwe
   Kiela. 2019.
 \newblock Adversarial nli: A new benchmark for natural language understanding.
 \newblock \emph{arXiv preprint arXiv:1910.14599}.
+
+\bibitem[{Pennington et~al.(2014)Pennington, Socher, and
+  Manning}]{pennington2014glove}
+Jeffrey Pennington, Richard Socher, and Christopher~D Manning. 2014.
+\newblock Glove: Global vectors for word representation.
+\newblock In \emph{Proceedings of the 2014 conference on empirical methods in
+  natural language processing (EMNLP)}, pages 1532--1543.
+
+\bibitem[{Rajpurkar et~al.(2018)Rajpurkar, Jia, and
+  Liang}]{rajpurkar-etal-2018-know}
+Pranav Rajpurkar, Robin Jia, and Percy Liang. 2018.
+\newblock \href {https://doi.org/10.18653/v1/P18-2124} {Know what you don{'}t
+  know: Unanswerable questions for {SQ}u{AD}}.
+\newblock In \emph{Proceedings of the 56th Annual Meeting of the Association
+  for Computational Linguistics (Volume 2: Short Papers)}, pages 784--789,
+  Melbourne, Australia. Association for Computational Linguistics.
+
+\bibitem[{Williams et~al.(2018)Williams, Nangia, and Bowman}]{N18-1101}
+Adina Williams, Nikita Nangia, and Samuel Bowman. 2018.
+\newblock \href {http://aclweb.org/anthology/N18-1101} {A broad-coverage
+  challenge corpus for sentence understanding through inference}.
+\newblock In \emph{Proceedings of the 2018 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 1 (Long Papers)}, pages 1112--1122. Association for
+  Computational Linguistics.
 
 \bibitem[{Williams et~al.(2017)Williams, Nangia, and
   Bowman}]{williams2017broad}

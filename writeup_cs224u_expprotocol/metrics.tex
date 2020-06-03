@@ -12,7 +12,7 @@ We measure our model performance using the accuracy metric. As shown in Table \r
 
 \toprule
 																														System
-                                        & \multicolumn{7}{c|}{Training Data Ratio} 
+                                        & \multicolumn{7}{c|}{Training Data Ratio Used} 
                                         & \multicolumn{1}{c}{Dev Acc}   
                                         & \multicolumn{1}{c}{Test Acc} \\ 
                                         
@@ -24,13 +24,15 @@ BERT\textsubscript{BASE}    		    												& 1.0       & - 		& - 			& -			& -
 RoBERTa\textsubscript{BASE}            											& 1.0       & - 		& - 			& -			& -				& -			& -				& 87.7 / 87.6   & 28.5 \\
 RoBERTa\textsubscript{LARGE}            										& 1.0       & - 		& - 			& -			& -				& -			& -				& 92.0 / 90.0   & 46.0 \\
 \midrule
-\multirow{2}{*}{\shortstack[l]{BERT\textsubscript{BASE}\\ with weak supervision}}	   		    				
+\multirow{3}{*}{\shortstack[l]{BERT\textsubscript{BASE} \\ (weak supervision)}}	   		    				
 																														& 0.1 			& 0.1 	& 0.1 		& -			& -				& -			& -				& 76.9 / 77.2		& 23.2 \\
 																														& 0.1 			& 0.1 	& 0.1 		& 0.1		& 0.1			& 0.1		& 0.1			& 77.3 / 77.6		& 25.8 \\
+																														& 1.0 			& 1.0 	& 1.0 		& 1.0		& 1.0			& 1.0		& 1.0			& 84.5 / 83.8		& 27.1 \\
 \midrule
-\multirow{2}{*}{\shortstack[l]{RoBERTa\textsubscript{BASE}\\ with weak supervision}}	 
+\multirow{3}{*}{\shortstack[l]{RoBERTa\textsubscript{BASE} \\ (weak supervision)}}	 
 																														& 0.1 			& 0.1 	& 0.1 		& -			& -				& -			& -				& 83.6 / 84.1		& 26.0 \\  		    				
 																														& 0.1 			& 0.1 	& 0.1 		& 0.1		& 0.1			& 0.1		& 0.1			& 83.6 / 84.3		& 29.3 \\
+																														& 1.0 			& 1.0 	& 1.0 		& 1.0		& 1.0			& 1.0		& 1.0			& 87.5 / 87.5		& 31.3 \\
 																														
 
 \bottomrule

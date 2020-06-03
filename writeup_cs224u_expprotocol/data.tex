@@ -32,7 +32,7 @@ Neutral    															& 131k  		& - 			& - 				& 2924			& -					& -					& -	
 \subsection{Test Set}
 \label{subsec:testset}
 
-For our test set we use the Adverserial NLI dataset, as described in \cite{nie2019adversarial}. More specifically we choose the test set from Round 1. By construction, this test set poses a serious challenge to our models. The examples in this dataset were verified as correct by human annotators. But a state-of-the-art BERT\textsubscript{LARGE} model trained on SNLI \cite{bowman2015large} and MNLI \cite{williams2017broad} datasets got them all wrong. Also, in the spirit of adversarial evaluation, we do not consider any other ANLI datasets during training. 
+For our test set we use the Adverserial NLI dataset, as described in \cite{nie2019adversarial}. More specifically we choose the \textit{test set from Round1} as our test set. This test set is referred to as ANLI-A1 in this project. By construction, this test set poses a serious challenge to our models. The examples in this dataset were verified as correct by human annotators. But a state-of-the-art BERT\textsubscript{LARGE} model trained on SNLI \cite{bowman2015large} and MNLI \cite{williams2017broad} datasets got them all wrong. Also, in the spirit of adversarial evaluation, we do not consider any other ANLI datasets during training. 
 
 \subsection{Dev Set}
 \label{subsec:devset}
@@ -44,19 +44,19 @@ For our dev set we use both the matched and mismatched dev sets which are part o
 
 We give a brief summary of the different datasets that we consider in our mix for training. The common theme for all these datasets is that they lend themselves to pairwise text classification. We argue that each of them can be cast for the NLI setting. \\
 
-\noindent {\bf MNLI:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+\noindent {\bf MNLI:}  The Multi-Genre Natural Language Inference Corpus \cite{N18-1101}, is a crowdsourced collection of sentence pairs with textual entailment annotations. Given a premise sentence and a hypothesis sentence, the task is to predict whether the premise entails the hypothesis (\texttt{entailment}), contradicts the hypothesis (\texttt{contradiction}), or neither (\texttt{neutral}). Given the presence of all the 3 categories of interest, it becomes a natural choice to be used for training. \\
 
-\noindent {\bf MRPC:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+\noindent {\bf MRPC:} The Microsoft Research Paraphrase Corpus \cite{dolan-brockett-2005-automatically} is a corpus of sentence pairs automatically extracted from online news sources, with human annotations for whether the sentences in the pair are semantically equivalent. We feel this dataset can be used for NLI as a form of weak supervision, with semantically equivalent sentences considered as \texttt{entailment}, and \texttt{contradiction} otherwise. \\
 
-\noindent {\bf QQP:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+\noindent {\bf QQP:} The Quora Question Pairs2  \cite{WinNT} dataset is a collection of question pairs from the community question-answering website Quora. The task is to determine whether a pair of questions are semantically equivalent. We feel this dataset can be used for NLI as a form of weak supervision, with semantically equivalent questions considered as \texttt{entailment}, and \texttt{contradiction} otherwise. \\
 
-\noindent {\bf STSB:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+\noindent {\bf STSB:} The Semantic Textual Similarity Benchmark \cite{cer-etal-2017-semeval} is a collection of sentence pairs drawn from news headlines, video and image captions, and natural language inference data. Each pair is human-annotated with a similarity score from 1 to 5. In order to use this for NLI, we do the following pre-processing : Pairs of sentences with similarity score in the range [1,2) , [2, 4] and (4, 5] are considered as \texttt{contradiction}, \texttt{neutral} and \texttt{entailment} respectively.\\
 
-\noindent {\bf QNLI:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+\noindent {\bf QNLI:} This is modified version of the  Stanford Question Answering Dataset \cite{rajpurkar-etal-2018-know}. The modification aims to determine whether the context sentence contains the answer to the question. For a given (context, question) pair, if it is a relevant questions (i.e. can be answered) then the pair is treated as \texttt{entailment}, and \texttt{contradiction} otherwise. \\
 
-\noindent {\bf RTE:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+\noindent {\bf RTE:} The Recognizing Textual Entailment (RTE) datasets come from a series of annual textual entailment challenges. The dataset we use combines the data from RTE1 \cite{dagan2005pascal}, RTE2 \cite{bar2006second}, RTE3 \cite{giampiccolo2007third}, and RTE5 \cite{bentivogli2009fifth}.\\
 
-\noindent {\bf WNLI:} An indoor path-loss propagation model essentially forms the bedrock for these techniques.\\
+\noindent {\bf WNLI:} This is modified version of the Winograd Schema Challenge \cite{levesque2012winograd}, the modification being that sentence pairs are constructed by replacing the ambiguous pronoun with each possible referent. \\
 
 
 

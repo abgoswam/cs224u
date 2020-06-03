@@ -1,3 +1,7 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: acl2020.aux
 The style file: acl_natbib.bst
 Database file #1: acl2020.bib
+Warning--entry type for "WinNT" isn't style-file defined
+--line 117 of file acl2020.bib
+Warning--can't use both volume and number fields in bar2006second
+(There were 2 warnings)

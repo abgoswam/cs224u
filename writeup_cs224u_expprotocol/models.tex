@@ -1,4 +1,26 @@
 \section{Models}
 \label{sec:models}
 
-A description of the models that you'll be using as baselines, and a preliminary description of the model or models that will be the focus of your investigation. At this early stage, some aspects of these models might not yet be worked out, so preliminary descriptions are fine.
+%A description of the models that you'll be using as baselines, and a preliminary description of the model or models that will be the focus of your investigation. At this early stage, some aspects of these models might not yet be worked out, so preliminary descriptions are fine.
+
+In this section we give a brief summary of the different models we consider in this study.
+
+\subsection{Random}
+\label{subsec:randommodel}
+
+This is a simplest case, where the model randomly selects one of the three classes: {\texttt{contradiction}, \texttt{neutral} \texttt{entailment}}
+
+\subsection{Baseline}
+\label{subsec:baselinemodel}
+
+Our baseline model is a hypothesis-only simple RNN classifier. Hypothesis-only baselines for NLI tasks can be remarkably robust, and hence we chose it as our baseline model. For the embedding layer, we use 50 dimensional Glove \cite{pennington2014glove} embeddings. We use a uni-directional LSTM with a hidden dimension of 50.
+
+\subsection{BERT}
+\label{subsec:bertmodel}
+
+BERT \cite{devlin-etal-2019-bert} is one of the Transformer-based models that we include in our study. We use \texttt{bert-base-uncased} which is a 12-layer, 768-hidden, 12-heads, 110M parameters model.
+
+\subsection{RoBERTa}
+\label{subsec:robertamodel}
+
+RoBERTa \cite{liu2019roberta} is the second Transformer-based models that we include in our study. We use roberta-base, which is a 12-layer, 768-hidden, 12-heads, 125M parameters model.
